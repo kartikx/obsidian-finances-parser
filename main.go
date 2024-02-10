@@ -2,21 +2,25 @@ package main
 
 import (
 	"fmt"
+	"github.com/kartikx/obsidian-finances-parser/models"
+	"github.com/kartikx/obsidian-finances-parser/parser"
 )
 
 func main() {
 	// Read these as a CLI argument.
 	financeStatementFilePath := "finances.pdf"
 	outputFilePath := "Budget Planning/2024-01.md"
+	financeStatementFormat := models.HDFC_DEBIT
 
-	// This should be an Enum.
-	financeStatementFormat := "HDFC-DEBIT"
-
-	expenses, err := parseStatement(financeStatementFilePath, financeStatementFormat)
+	expenses, err := parser.ParseStatement(financeStatementFilePath, financeStatementFormat)
 
 	if err != nil {
 		fmt.Println("Parsing Statement failed", err)
 		return
+	}
+
+	for _, expense := range expenses {
+		fmt.Println(expense)
 	}
 
 	formattedExpenses, err := formatExpensesForObsidian(expenses)

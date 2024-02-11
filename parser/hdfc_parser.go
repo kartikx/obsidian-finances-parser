@@ -10,13 +10,12 @@ import (
 
 // Regular expression pattern to match the date on the start of each expense.
 // Declared globally to prevent re-compilation.
-var dateRegex = regexp.MustCompile(`^\s*(\d{2}/\d{2}/\d{2})`)
-
-var lastExpenseRegex = regexp.MustCompile(`^\s*HDFC BANK LIMITED`)
-
-var lastExpenseOnLastPageRegex = regexp.MustCompile(`^\s*STATEMENT SUMMARY :-`)
-
-var lineSplitPattern = regexp.MustCompile(`\s{5,}`)
+var (
+	dateRegex                  = regexp.MustCompile(`^\s*(\d{2}/\d{2}/\d{2})`)
+	lastExpenseRegex           = regexp.MustCompile(`^\s*HDFC BANK LIMITED`)
+	lastExpenseOnLastPageRegex = regexp.MustCompile(`^\s*STATEMENT SUMMARY :-`)
+	lineSplitPattern           = regexp.MustCompile(`\s{5,}`)
+)
 
 func ParseHdfcStatement(statement string) ([]models.Expense, error) {
 	pages := strings.Split(statement, "\f")

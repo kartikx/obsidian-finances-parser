@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/kartikx/obsidian-finances-parser/models"
-	"os"
 	"os/exec"
 )
 
@@ -34,43 +33,14 @@ func convertPdfToTxt(filePath string) (string, error) {
 	return buf.String(), nil
 }
 
-// For local testing only, avoids re-exec of `pdftotext` again and again
-func readConvertedTxtFile() (string, error) {
-	content, err := os.ReadFile("finances-csv.txt")
-
-	if err != nil {
-		err = fmt.Errorf("reading finances.txt failed with %s", err.Error())
-		return "", err
-	}
-
-	return string(content), nil
-}
-
 func ParseStatement(financeStatementFilePath string, financeStatementFormat models.StatementFormat) ([]*models.Expense, error) {
-	var financeStatementText string
 	var err error
-
-	if debug {
-		// Skip Pdf to Txt conversion in debug mode.
-		financeStatementText, err = readConvertedTxtFile()
-
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		financeStatementText, err = convertPdfToTxt(financeStatementFilePath)
-
-		if err != nil {
-			err = fmt.Errorf("PDF to TXT conversion failed with %s", err.Error())
-			return nil, err
-		}
-	}
 
 	var expenses []*models.Expense
 
 	switch financeStatementFormat {
 	case models.HDFC_DEBIT:
-		expenses, err = ParseHdfcStatement(financeStatementText)
+		expenses, err = ParseHdfcStatement(financeStatementFilePath)
 	default:
 		err = fmt.Errorf("financeStatemtFormat %d is invalid.", financeStatementFormat)
 	}

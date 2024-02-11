@@ -2,13 +2,20 @@ package parser
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/kartikx/obsidian-finances-parser/models"
 )
 
-func ParseHdfcStatement(statement string) ([]*models.Expense, error) {
+func ParseHdfcStatement(statementPath string) ([]*models.Expense, error) {
+	statement, err := readStatement(statementPath)
+
+	if err != nil {
+		return nil, err
+	}
+
 	// Skip first 2 lines
 	expenseLines := strings.Split(statement, "\n")[2:]
 
@@ -28,6 +35,17 @@ func ParseHdfcStatement(statement string) ([]*models.Expense, error) {
 	}
 
 	return expenses, nil
+}
+
+func readStatement(statementPath string) (string, error) {
+	content, err := os.ReadFile(statementPath)
+
+	if err != nil {
+		err = fmt.Errorf("reading finances.txt failed with %s", err.Error())
+		return "", err
+	}
+
+	return string(content), nil
 }
 
 func parseExpense(expenseLine string) (*models.Expense, error) {

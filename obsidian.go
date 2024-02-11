@@ -5,21 +5,69 @@
 package main
 
 import (
-	. "github.com/kartikx/obsidian-finances-parser/models"
+	"fmt"
+	"os"
+
+	"github.com/kartikx/obsidian-finances-parser/models"
 )
 
-func formatExpensesForObsidian(expenses []*Expense) ([]string, error) {
-	// Converts each expense type into a formatted expense.
-	// Look at README for the format.
-	// Keep "categories" as empty for now. Eventually build logic to parse it out of name.
+func formatExpensesForObsidian(expenses []*models.Expense) ([]string, error) {
+	formattedExpenses := make([]string, 0, len(expenses))
 
-	return nil, nil
+	for _, expense := range expenses {
+		formattedExpense := formatExpenseForObsidian(expense)
+		formattedExpenses = append(formattedExpenses, formattedExpense)
+	}
+
+	return formattedExpenses, nil
 }
 
-func writeToObsidianVault(formattedExpenses []string, outputFilePath string) {
-	// Write to the path.
+func formatExpenseForObsidian(expense *models.Expense) string {
+	categories := ""
+
+	for _, category := range expense.Categories {
+		categories += category.String() + ","
+	}
+
+	return fmt.Sprintf("- #expense (name::%s) (amount::%.2f) (date::%s) (categories::%s) (note::%s)",
+		expense.Name,
+		expense.Amount,
+		expense.Date,
+		categories,
+		expense.Note)
+}
+
+// TODO Rename this function and file.
+func writeToObsidianVault(formattedExpenses []string, outputFilePath string) error {
+	fmt.Println("Writing to Obsidian Vault")
+
+	if len(outputFilePath) == 0 {
+		return fmt.Errorf("output file path provided is empty")
+	}
+
+	file, err := os.OpenFile(outputFilePath, os.O_CREATE|os.O_APPEND, 0644)
+
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	// TODO Appends should not write expenses that are already present. Will need to seek to figure this out.
+	for _, formattedExpense := range formattedExpenses {
+		_, err = file.WriteString(formattedExpense + "\n")
+
+		if err != nil {
+			return err
+		}
+	}
+
+	// Successful write
+	return nil
 }
 
 func writeToConsole(formattedExpenses []string) {
-	// Just write to console one-by-one.
+	for _, formattedExpense := range formattedExpenses {
+		fmt.Println(formattedExpense)
+	}
 }

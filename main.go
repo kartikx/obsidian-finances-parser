@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/kartikx/obsidian-finances-parser/models"
 	"github.com/kartikx/obsidian-finances-parser/parser"
 )
@@ -19,8 +21,10 @@ func main() {
 		return
 	}
 
+	outputFile, _ := os.Create("expenses.txt")
+
 	for _, expense := range expenses {
-		fmt.Println(expense)
+		outputFile.WriteString(expense.String() + "\n")
 	}
 
 	formattedExpenses, err := formatExpensesForObsidian(expenses)

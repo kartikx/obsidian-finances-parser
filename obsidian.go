@@ -8,7 +8,7 @@ import (
 	. "github.com/kartikx/obsidian-finances-parser/models"
 )
 
-func formatExpensesForObsidian(expenses []Expense) ([]string, error) {
+func formatExpensesForObsidian(expenses []*Expense) ([]string, error) {
 	// Converts each expense type into a formatted expense.
 	// Look at README for the format.
 	// Keep "categories" as empty for now. Eventually build logic to parse it out of name.

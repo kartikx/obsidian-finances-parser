@@ -4,11 +4,13 @@ import "fmt"
 
 type Expense struct {
 	Name       string
-	Amount     string
-	Date       string // Should this be a Date type instead?
-	Categories []string
+	Amount     float32
+	Date       string
+	Categories []ExpenseCategory
+	Note       string
 }
 
 func (exp Expense) String() string {
-	return fmt.Sprintf("[Name: %s, Amount: %s, Date: %s, Categories: (%s)]", exp.Name, exp.Amount, exp.Date, exp.Categories)
+	return fmt.Sprintf("[Name: %s, Amount: %.2f, Date: %s, Categories: (%s), Note: (%s)]",
+		exp.Name, exp.Amount, exp.Date, exp.Categories, exp.Note)
 }

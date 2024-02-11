@@ -34,13 +34,9 @@ func convertPdfToTxt(filePath string) (string, error) {
 	return buf.String(), nil
 }
 
-func guessCategoriesFromExpenseName(expenseName string) []string {
-	return make([]string, 0)
-}
-
 // For local testing only, avoids re-exec of `pdftotext` again and again
 func readConvertedTxtFile() (string, error) {
-	content, err := os.ReadFile("finances.txt")
+	content, err := os.ReadFile("finances-csv.txt")
 
 	if err != nil {
 		err = fmt.Errorf("reading finances.txt failed with %s", err.Error())
@@ -50,7 +46,7 @@ func readConvertedTxtFile() (string, error) {
 	return string(content), nil
 }
 
-func ParseStatement(financeStatementFilePath string, financeStatementFormat models.StatementFormat) ([]models.Expense, error) {
+func ParseStatement(financeStatementFilePath string, financeStatementFormat models.StatementFormat) ([]*models.Expense, error) {
 	var financeStatementText string
 	var err error
 
@@ -70,7 +66,7 @@ func ParseStatement(financeStatementFilePath string, financeStatementFormat mode
 		}
 	}
 
-	var expenses []models.Expense
+	var expenses []*models.Expense
 
 	switch financeStatementFormat {
 	case models.HDFC_DEBIT:

@@ -3,6 +3,6 @@ package models
 type StatementFormat uint
 
 const (
-	UNKNOWN StatementFormat = iota
+	UNKNOWN_STATEMENT StatementFormat = iota
 	HDFC_DEBIT
 )

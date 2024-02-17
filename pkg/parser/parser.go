@@ -1,7 +1,5 @@
-/*
- * Contains methods to parse statements from multiple banks into a unified format
- * that can be written into Obsidian.
- */
+// Contains methods to parse statements from multiple banks into a unified format
+// that can be written into Obsidian.
 
 package parser
 
@@ -9,7 +7,8 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/kartikx/obsidian-finances-parser/models"
+	"github.com/kartikx/obsidian-finances-parser/pkg/models"
+	// "os"
 	"os/exec"
 )
 

@@ -3,7 +3,7 @@ package parser
 import (
 	"strings"
 
-	"github.com/kartikx/obsidian-finances-parser/models"
+	"github.com/kartikx/obsidian-finances-parser/pkg/models"
 )
 
 func GetCategoriesForExpense(expense *models.Expense) []models.ExpenseCategory {

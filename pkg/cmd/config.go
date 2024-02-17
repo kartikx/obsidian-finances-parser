@@ -1,6 +1,6 @@
-package main
+package cmd
 
-import "github.com/kartikx/obsidian-finances-parser/models"
+import "github.com/kartikx/obsidian-finances-parser/pkg/models"
 
 var (
 	FinanceStatementFilePath = "finances-csv.txt"

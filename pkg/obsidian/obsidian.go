@@ -1,17 +1,14 @@
-/**
- * Contains methods to generate and write data for Obsidian.
- */
-
-package main
+// Contains methods to generate and write data for Obsidian.
+package obsidian
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/kartikx/obsidian-finances-parser/models"
+	"github.com/kartikx/obsidian-finances-parser/pkg/models"
 )
 
-func formatExpensesForObsidian(expenses []*models.Expense) ([]string, error) {
+func FormatExpensesForObsidian(expenses []*models.Expense) ([]string, error) {
 	formattedExpenses := make([]string, 0, len(expenses))
 
 	for _, expense := range expenses {
@@ -38,7 +35,7 @@ func formatExpenseForObsidian(expense *models.Expense) string {
 }
 
 // TODO Rename this function and file.
-func writeToObsidianVault(formattedExpenses []string, outputFilePath string) error {
+func WriteToObsidianVault(formattedExpenses []string, outputFilePath string) error {
 	fmt.Println("Writing to Obsidian Vault")
 
 	if len(outputFilePath) == 0 {
@@ -66,7 +63,7 @@ func writeToObsidianVault(formattedExpenses []string, outputFilePath string) err
 	return nil
 }
 
-func writeToConsole(formattedExpenses []string) {
+func WriteToConsole(formattedExpenses []string) {
 	for _, formattedExpense := range formattedExpenses {
 		fmt.Println(formattedExpense)
 	}

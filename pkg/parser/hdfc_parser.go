@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kartikx/obsidian-finances-parser/models"
+	"github.com/kartikx/obsidian-finances-parser/pkg/models"
 )
 
 func ParseHdfcStatement(statementPath string) ([]*models.Expense, error) {

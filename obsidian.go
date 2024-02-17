@@ -26,7 +26,13 @@ func formatExpenseForObsidian(expense *models.Expense) string {
 	categories := ""
 
 	for _, category := range expense.Categories {
-		categories += category.String() + ","
+		categories += fmt.Sprintf("\"%s\",", category.String())
+	}
+
+	if len(categories) > 0 {
+		categories = categories[:len(categories)-1]
+	} else {
+		categories = "\"" + models.UNKNOWN_EXPENSE.String() + "\""
 	}
 
 	return fmt.Sprintf("- #expense (name::%s) (amount::%.2f) (date::%s) (categories::%s) (note::%s)",

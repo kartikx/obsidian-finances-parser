@@ -21,18 +21,15 @@ func NewObsidianParserCommand() *cobra.Command {
 				return
 			}
 
-			formattedExpenses, err := obsidian.FormatExpensesForObsidian(expenses)
-
-			if err != nil {
-				fmt.Println("Formatting expenses failed", err)
-				return
-			}
-
 			// TODO:could be improved to decide code flow based on state of the program instead of file path
 			if len(outputFilePath) > 0 {
-				obsidian.WriteToObsidianVault(formattedExpenses, outputFilePath)
+				err = obsidian.WriteToObsidianVault(expenses, outputFilePath)
+
+				if err != nil {
+					fmt.Println("errors while writing to Obsidian: ", err)
+				}
 			} else {
-				obsidian.WriteToConsole(formattedExpenses)
+				obsidian.WriteToConsole(expenses)
 			}
 		},
 	}
